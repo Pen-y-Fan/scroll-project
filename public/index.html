@@ -10,16 +10,20 @@
 <body>
 <div class="container">
     <div id="content">
-        <nav class="navbar fixed-top navbar-light bg-light">
-            <a class="navbar-brand" href="#">Fixed top</a>
+        <nav class="navbar fixed-top navbar-light" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href="./index.html">Reset</a>
+            <span class="navbar-text">
+              <span id="price">Total: 0.00</span>
+            </span>
         </nav>
+        <br><br><br>
         <h1>Shopping</h1>
     </div>
 </div>
 <script src="./js/jquery.min.js"></script>
 <script>
     let oset = 0;
-    let value = 0;
+    let total = 0;
     let holdload = false;
     $(function () {
         loadArt(6);
@@ -30,9 +34,10 @@
         }
     })
 
-    for (let i = 1; i < 6; i++) {
+
+    for (let i = 1; i < 3; i++) {
         setTimeout(() => {
-            console.log("loading another 6..");
+            // console.log("loading another 6..");
             loadArt(6);
         }, 500 * i);
     }
@@ -57,16 +62,21 @@
                     for (let i = 0; i < data.products.length; i++) {
                         oset++;
                         const item = data.products[i];
-                        value += +item['Price'];
-                        const html = `<div class="card bg-light my-3" style="width: 18rem;">
+                        total += Number(item['Price']);
+                        const html = `
+                        <div class="card bg-light my-3" style="width: 18rem;">
                           <div class="card-body">
                             <div class="card-header text-center">${item['Name']}</div>
                             <h5 class="card-title">Price $${Number(item['Price']).toFixed(2)}</h5>
                             <p class="card-text">${item['Location']}</p>
-                            <div class="card-text text-right"><span class="badge badge-pill badge-warning">${oset}</span></div>
+                            <div class="card-text text-right">
+                                <span class="badge badge-pill badge-warning">Item: ${oset}</span>
+                            </div>
                           </div>
                         </div>`;
                         $('#content').append(html);
+                        $('#price').html(`Total:  <strong>$${total.toFixed(2)}</strong>`)
+                        console.log(total);
                     }
                     holdload = false;
                 }
