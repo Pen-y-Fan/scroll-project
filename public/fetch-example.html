@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Fetch json example</title>
+
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body data-gr-c-s-loaded="true">
+    <h1>Fetch json example</h1>
+    <ul>
+
+    </ul>
+
+  
+  <script>
+    var myList = document.querySelector('ul');
+
+    fetch('products.json')
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error("HTTP error, status = " + response.status);
+      }
+      return response.json();
+    })
+    .then(function(json) {
+      for(var i = 0; i < json.products.length; i++) {
+        var listItem = document.createElement('li');
+        listItem.innerHTML = '<strong>' + json.products[i].Name + '</strong>';
+        listItem.innerHTML +=' can be found in ' + json.products[i].Location + '.';
+        listItem.innerHTML +=' Cost: <strong>£' + json.products[i].Price + '</strong>';
+        myList.appendChild(listItem);
+      }
+    })
+    .catch(function(error) {
+      var p = document.createElement('p');
+      p.appendChild(
+        document.createTextNode('Error: ' + error.message)
+      );
+      document.body.insertBefore(p, myList);
+    });
+
+  </script>
+
+</body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Scroll Project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div id="content">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">Menu</a>
+        </nav>
+        <h1>Star Wars</h1>
+    </div>
+</div>
+<script src="./js/jquery.min.js"></script>
+<script>
+    let oset = 0;
+    let holdload = false;
+
+    $(function () {
+        for (let i = 1; i < 3; i++) {
+            setTimeout(() => {
+                console.log("loading another 1..");
+                loadArt();
+            }, 500 * i);
+        }
+    });
+    $(window).scroll(function () {
+        if (($(window).scrollTop() >= $(document).height() - $(window).height() - 100) && !holdload) {
+            loadArt();
+        }
+    })
+
+    function loadArt() {
+        if (!holdload) {
+            holdload = true;
+            oset++;
+            $.ajax({
+                url: "https://swapi.dev/api/people/" + oset,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    const html = `<div class="card bg-light my-3" style="width: 18rem;">
+                      <div class="card-body">
+                        <div class="card-header text-center">${data['name']}</div>
+                        <p class="card-text"><strong>Hair: </strong>${data['hair_color']}</p>
+                        <p class="card-text"><strong>Height: </strong>${data['height']}</p>
+                        <p class="card-text"><strong>Weight: </strong>${data['mass']}</p>
+                        <p class="card-text"><strong>Skin Colour: </strong>${data['skin_color']}</p>
+                        <p class="card-text"><strong>Eye Colour: </strong>${data['eye_color']}</p>
+                        <p class="card-text"><strong>Birth Date: </strong>${data['birth_year']}</p>
+                        <div class="card-text text-right"><span class="badge badge-pill badge-warning">${oset}</span></div>
+                      </div>
+                    </div>`;
+                    $('#content').append(html);
+                    holdload = false;
+                }
+            })
+        }
+    }
+</script>
+</body>
+</html>
